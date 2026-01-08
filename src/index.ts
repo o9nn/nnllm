@@ -7,6 +7,7 @@ import {
 
 export * from './interfaces.js';
 export * from './constants.js';
+export * from './neuro-symbolic/index.js';
 
 export async function loadElectronLlm(options?: LoadOptions) {
   const processType = await getProcessType();

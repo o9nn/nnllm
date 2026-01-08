@@ -11,6 +11,7 @@ import {
   InternalLanguageModelCreateOptions,
   InternalLanguageModelPromptOptions,
 } from './interfaces';
+import { NeuroSymbolicLLM } from './neuro-symbolic/neuro-symbolic-llm.js';
 
 interface LanguageModelParams {
   readonly defaultTopK: number;
@@ -41,6 +42,7 @@ export class LanguageModel {
   private initialPrompts?: LanguageModelPrompt[];
   private context?: any;
   private session?: LlamaChatSession;
+  private neuroSymbolic: NeuroSymbolicLLM;
 
   private static readonly paramsData: LanguageModelParams = {
     defaultTopK: 10,
@@ -61,6 +63,13 @@ export class LanguageModel {
     this.initialPrompts = options.initialPrompts;
     this.context = context;
     this.session = session;
+
+    // Initialize neuro-symbolic components
+    this.neuroSymbolic = new NeuroSymbolicLLM({
+      enablePerception: true,
+      enableReasoning: true,
+      tensorSize: 128,
+    });
   }
 
   static async create(
@@ -144,14 +153,23 @@ export class LanguageModel {
       .map((p) => this.parseContent(p.content))
       .join('\n');
 
-    const response = await this.session.prompt(processedInput, {
+    // Apply neuro-symbolic preprocessing
+    const enhancedInput = this.neuroSymbolic.enhancePrompt(processedInput);
+
+    const response = await this.session.prompt(enhancedInput, {
       temperature: this.temperature,
       signal: options?.signal,
       stopOnAbortSignal: true,
       topK: this.topK,
     });
 
-    return response;
+    // Apply neuro-symbolic post-processing
+    const enhancedResponse = this.neuroSymbolic.postProcessResponse(
+      response,
+      processedInput,
+    );
+
+    return enhancedResponse;
   }
 
   promptStreaming(
@@ -178,9 +196,12 @@ export class LanguageModel {
       .map((p) => this.parseContent(p.content))
       .join('\n');
 
+    // Apply neuro-symbolic preprocessing
+    const enhancedInput = this.neuroSymbolic.enhancePrompt(processedInput);
+
     return new ReadableStream({
       start: async (controller) => {
-        await this.session!.prompt(processedInput, {
+        await this.session!.prompt(enhancedInput, {
           temperature: this.temperature,
           signal: options?.signal,
           stopOnAbortSignal: true,
