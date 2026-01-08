@@ -252,11 +252,6 @@ function runAllExamples() {
   console.log('╚══════════════════════════════════════════════════════════╝');
 }
 
-// Run if this is the main module
-if (require.main === module) {
-  runAllExamples();
-}
-
 export {
   basicExample,
   esnExample,

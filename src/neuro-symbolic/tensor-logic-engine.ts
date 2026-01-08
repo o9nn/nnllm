@@ -274,9 +274,15 @@ export class TensorLogicEngine {
     for (let i = 0; i < this.tensorSize; i++) {
       embedding[i] = Math.random() * 2 - 1;
     }
-    // Normalize
-    const norm = Math.sqrt(embedding.reduce((sum, val) => sum + val * val, 0));
-    return embedding.map((val) => val / norm);
+    return this.normalizeVector(embedding);
+  }
+
+  /**
+   * Normalize a vector to unit length
+   */
+  private normalizeVector(vector: number[]): number[] {
+    const norm = Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0));
+    return norm > 0 ? vector.map((val) => val / norm) : vector;
   }
 
   /**
@@ -459,9 +465,7 @@ export class TensorLogicEngine {
       }
     }
 
-    // Normalize
-    const norm = Math.sqrt(embedding.reduce((sum, val) => sum + val * val, 0));
-    return norm > 0 ? embedding.map((val) => val / norm) : embedding;
+    return this.normalizeVector(embedding);
   }
 
   /**

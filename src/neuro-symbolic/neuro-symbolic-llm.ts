@@ -35,6 +35,7 @@ export interface ProcessingResult {
  * Combines neural perception (ESN) with symbolic reasoning (Tensor-Logic)
  */
 export class NeuroSymbolicLLM {
+  private static readonly EPSILON = 0.001; // Small value to prevent division by zero
   private perceptionLayer: EchoStateNetwork;
   private reasoningEngine: TensorLogicEngine;
   private enablePerception: boolean;
@@ -186,7 +187,7 @@ export class NeuroSymbolicLLM {
     // Synergy is higher when both components are active and aligned
     const harmonic =
       (2 * neuralActivation * symbolicConfidence) /
-      (neuralActivation + symbolicConfidence + 0.001);
+      (neuralActivation + symbolicConfidence + NeuroSymbolicLLM.EPSILON);
     const geometric = Math.sqrt(neuralActivation * symbolicConfidence);
 
     // Weighted combination
@@ -275,7 +276,7 @@ export class NeuroSymbolicLLM {
 
     // Convert text inputs to numerical format
     const numericInputs = inputs.map((text) =>
-      EchoStateNetwork.encodeText(text, this.perceptionLayer['inputSize']),
+      EchoStateNetwork.encodeText(text, this.perceptionLayer.getInputSize()),
     );
 
     this.perceptionLayer.train(numericInputs, expectedOutputs);

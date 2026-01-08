@@ -197,6 +197,13 @@ export class EchoStateNetwork {
   }
 
   /**
+   * Get input size
+   */
+  public getInputSize(): number {
+    return this.inputSize;
+  }
+
+  /**
    * Reset the internal state
    */
   public reset(): void {
