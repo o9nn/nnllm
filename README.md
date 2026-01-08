@@ -3,11 +3,19 @@
 [![Test](https://github.com/electron/llm/actions/workflows/test.yml/badge.svg)](https://github.com/electron/llm/actions/workflows/test.yml)
 [![npm version](https://img.shields.io/npm/v/@electron/llm.svg)](https://npmjs.org/package/@electron/llm)
 
-This module makes it easy for developers to prototype local-first applications interacting with local large language models (LLMs), especially in chat contexts.
+This module makes it easy for developers to prototype local-first applications interacting with local large language models (LLMs), especially in chat contexts. It now includes **neuro-symbolic AI capabilities** inspired by OpenCog, combining neural perception with symbolic reasoning.
 
 It aims for an API surface similar to Chromium's `window.AI` API, except that you can supply any GGUF model. Under the hood, `@electron/llm` makes use of [node-llama-cpp](https://github.com/withcatai/node-llama-cpp). Our goal is to make use of native LLM capabilities in Electron _easier_ than if you consumed a Llama.cpp implementation directly - but not more feature-rich. Today, this module provides a reference implementation of `node-llama-cpp` that loads the model in a utility process and uses Chromium Mojo IPC pipes to efficiently facilitate streaming of responses between the utility process and renderers. If you're building an advanced app with LLM, you might want to use this module as a reference for your process architecture.
 
 `@electron/llm` is an experimental package. The Electron maintainers are exploring different ways to support and enable developers interested in running language models locally - and this package is just one of the potential avenues we're exploring. It's possible that we'll go in a different direction. Before using this package in a production app, be aware that you might have to migrate to something else!
+
+## Features
+
+- 🤖 **Local LLM Integration** - Run language models directly in Electron
+- 🧠 **Neuro-Symbolic AI** - OpenCog-inspired architecture combining neural and symbolic reasoning
+- 🌊 **Echo-State Networks** - Reservoir computing for temporal perception
+- 🔗 **Tensor-Logic Reasoning** - Probabilistic symbolic inference with AtomSpace
+- ⚡ **Cognitive Synergy** - Enhanced intelligence through neural-symbolic integration
 
 # Quick Start
 
@@ -114,6 +122,39 @@ Sends a prompt to the model and returns the response as a stream of text chunks.
 
 Allows the abortion of a currently running model load or prompting request. To use this API, make sure to pass in `requestUUID` to your
 requests.
+
+# Neuro-Symbolic AI
+
+This module includes neuro-symbolic AI capabilities that enhance LLM responses with:
+
+- **Echo-State Networks (ESN)**: Neural perception layer for processing sequential/temporal data
+- **Tensor-Logic Reasoning**: Symbolic reasoning with probabilistic logic and knowledge graphs
+- **Cognitive Synergy**: Integration of neural and symbolic processing for enhanced intelligence
+
+For detailed documentation on neuro-symbolic features, see [NEURO_SYMBOLIC.md](NEURO_SYMBOLIC.md).
+
+## Quick Example
+
+```typescript
+import { NeuroSymbolicLLM } from '@electron/llm';
+
+// Create neuro-symbolic system
+const neuroSymbolic = new NeuroSymbolicLLM({
+  enablePerception: true,
+  enableReasoning: true,
+});
+
+// Process input through neural-symbolic pipeline
+const result = neuroSymbolic.process('Tell me about AI');
+console.log('Cognitive synergy:', result.integration.synergy);
+
+// Add knowledge to the system
+neuroSymbolic.addKnowledge('machine_learning', [
+  { type: 'IsA', target: 'artificial_intelligence' }
+]);
+```
+
+The neuro-symbolic system is automatically integrated into the main `LanguageModel` class, enhancing all prompts with perception and reasoning context.
 
 # Testing
 
